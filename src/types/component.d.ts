@@ -1,11 +1,6 @@
-/**
- * declare module '@vue/runtime-core'
- *   现调整为
- * declare module 'vue'
- */
-import 'vue'
+import ShopSwiper from './ShopSwiper.vue'
 declare module 'vue' {
   export interface GlobalComponents {
-    //
+    ShopSwiper: typeof ShopSwiper
   }
 }
