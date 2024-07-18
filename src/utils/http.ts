@@ -42,9 +42,11 @@ export const http = <T>(options: UniApp.RequestOptions) => {
       ...options,
       // 响应成功
       success(res) {
+        // 200-300为成功
         if (res.statusCode >= 200 && res.statusCode <= 300) {
           // 提取返回值核心数据
           resolve(res.data as Data<T>)
+          // 401为token失效
         } else if (res.statusCode === 401) {
           const memberStore = useMemberStore()
           memberStore.clearProfile()
