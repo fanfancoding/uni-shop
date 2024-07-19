@@ -1,25 +1,34 @@
 <script setup lang="ts">
 import CustomNavbar from '@/pages/index/components/CustomNavbar.vue'
-import { getHomeBannerAPI } from '@/services/home'
+import { getHomeBannerAPI, getHomeCategoryAPI } from '@/services/home'
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
-import type { BannerItem } from '@/types/home'
+import type { BannerItem, CategoryItem } from '@/types/home'
 import CategoryPanel from './components/CategoryPanel.vue'
 
+// 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
-const getHomeBannerDataList = async () => {
+const getHomeBannerData = async () => {
   const res = await getHomeBannerAPI()
   bannerList.value = res.result
 }
+
+// 获取首页分类模块数据
+const categoryList = ref<CategoryItem[]>([])
+const getHomeCategoryData = async () => {
+  const res = await getHomeCategoryAPI()
+  categoryList.value = res.result
+}
 onLoad(() => {
-  getHomeBannerDataList()
+  getHomeBannerData()
+  getHomeCategoryData()
 })
 </script>
 
 <template>
   <CustomNavbar />
   <ShopSwiper :list="bannerList" />
-  <CategoryPanel />
+  <CategoryPanel :list="categoryList" />
 </template>
 
 <style lang="scss">
