@@ -27,7 +27,6 @@ const hotList = ref<HotItem[]>([])
 const getHomeHotData = async () => {
   const res = await getHomeHotAPI()
   hotList.value = res.result
-  console.log(res)
 }
 
 // 生命周期函数
@@ -44,12 +43,31 @@ const guessRef = ref<ShopGuessInstance>()
 const onScrollToLower = () => {
   guessRef.value?.getHomeGoodsGuessLikeData()
 }
+
+const isTriggered = ref(false)
+
+// 自定义刷新
+const onRefresherrefresh = async () => {
+  // 开启动画
+  isTriggered.value = true
+  // 加载数据
+  await Promise.all([getHomeBannerData(), getHomeCategoryData(), getHomeHotData()])
+  // 关闭动画
+  isTriggered.value = false
+}
 </script>
 
 <template>
   <!-- 导航栏 -->
   <CustomNavbar />
-  <scroll-view @scrolltolower="onScrollToLower" class="scroll" scroll-y>
+  <scroll-view
+    refresher-enabled
+    @refresherrefresh="onRefresherrefresh"
+    :refresher-triggered="isTriggered"
+    @scrolltolower="onScrollToLower"
+    class="scroll"
+    scroll-y
+  >
     <!-- 轮播图 -->
     <ShopSwiper :list="bannerList" />
     <!-- 分类模块 -->
