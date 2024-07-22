@@ -10,10 +10,24 @@ const pageParams: Required<PageParams> = {
   page: 1,
   pageSize: 10,
 }
+const finish = ref(false)
 const getHomeGoodsGuessLikeData = async () => {
+  // 推出判断
+  if (finish.value === true) {
+    return uni.showToast({
+      icon: 'none',
+      title: 'End~',
+    })
+  }
   const res = await getHomeGoodsGuessLikeAPI(pageParams)
   dataList.value.push(...res.result.items)
-  pageParams.pageSize++
+  // 分页条件
+  if (pageParams.page < res.result.pages) {
+    // 页码累加
+    pageParams.pageSize++
+  } else {
+    finish.value = true
+  }
 }
 
 onMounted(() => {
