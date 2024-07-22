@@ -30,11 +30,21 @@ const getHomeGoodsGuessLikeData = async () => {
   }
 }
 
+// 组件声明周期
 onMounted(() => {
   getHomeGoodsGuessLikeData()
 })
 
+// 重置数据
+const resetData = () => {
+  pageParams.page = 1
+  dataList.value = []
+  finish.value = false
+}
+
+// 对父组件暴露
 defineExpose({
+  resetData,
   getHomeGoodsGuessLikeData,
 })
 </script>
