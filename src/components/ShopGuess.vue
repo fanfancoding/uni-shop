@@ -3,14 +3,25 @@ import { getHomeGoodsGuessLikeAPI } from '@/services/home'
 import { ref } from 'vue'
 import { onMounted } from 'vue'
 import type { GuessItem } from '@/types/home'
+import type { PageParams } from '@/types/global'
 
 const dataList = ref<GuessItem[]>([])
-const getHomeGoodsGuessLikeData = async () => {
-  const res = await getHomeGoodsGuessLikeAPI()
-  dataList.value = res.result.items
+const pageParams: Required<PageParams> = {
+  page: 1,
+  pageSize: 10,
 }
+const getHomeGoodsGuessLikeData = async () => {
+  const res = await getHomeGoodsGuessLikeAPI(pageParams)
+  dataList.value.push(...res.result.items)
+  pageParams.pageSize++
+}
+
 onMounted(() => {
   getHomeGoodsGuessLikeData()
+})
+
+defineExpose({
+  getHomeGoodsGuessLikeData,
 })
 </script>
 

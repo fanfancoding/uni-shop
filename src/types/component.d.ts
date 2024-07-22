@@ -6,3 +6,6 @@ declare module 'vue' {
     ShopGuess: typeof ShopGuess
   }
 }
+
+// 组件实例类型
+export type ShopGuessInstance = InstanceType<typeof ShopGuess>

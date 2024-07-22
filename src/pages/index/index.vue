@@ -6,6 +6,7 @@ import { ref } from 'vue'
 import type { BannerItem, CategoryItem, HotItem } from '@/types/home'
 import CategoryPanel from './components/CategoryPanel.vue'
 import HotPanel from './components/HotPanel.vue'
+import type { ShopGuessInstance } from '@/types/component'
 
 // 获取轮播图数据
 const bannerList = ref<BannerItem[]>([])
@@ -35,12 +36,20 @@ onLoad(() => {
   getHomeCategoryData()
   getHomeHotData()
 })
+
+// 获取猜你喜欢模块组件实例
+const guessRef = ref<ShopGuessInstance>()
+
+// 页面滑动触底 触发
+const onScrollToLower = () => {
+  guessRef.value?.getHomeGoodsGuessLikeData()
+}
 </script>
 
 <template>
   <!-- 导航栏 -->
   <CustomNavbar />
-  <scroll-view class="scroll" scroll-y>
+  <scroll-view @scrolltolower="onScrollToLower" class="scroll" scroll-y>
     <!-- 轮播图 -->
     <ShopSwiper :list="bannerList" />
     <!-- 分类模块 -->
@@ -48,7 +57,7 @@ onLoad(() => {
     <!-- 热门模块 -->
     <HotPanel :list="hotList" />
     <!-- 猜你喜欢模块 -->
-    <ShopGuess />
+    <ShopGuess ref="guessRef" />
   </scroll-view>
 </template>
 
